@@ -10,7 +10,6 @@ enum StationType {
 }
 
 impl StationType {
-    // Convertit une station en String
     fn to_string(&self) -> String {
         match self {
             StationType::StationA => "StationA".to_string(),
@@ -31,7 +30,6 @@ struct WeatherRecord {
 }
 
 impl WeatherRecord {
-    // Convertit la structure en une ligne CSV
     fn to_csv_line(&self) -> String {
         format!(
             "{},{},{:.1},{:.1}",
@@ -43,14 +41,29 @@ impl WeatherRecord {
     }
 }
 
-fn main() {
-    // Test temporaire pour valider la struct et la méthode
-    let record = WeatherRecord {
-        date: "2025-03-15".to_string(),
-        station: StationType::StationA,
-        temperature: 18.5,
-        pressure: 1013.2,
+// Fonction pour générer une date aléatoire valide
+fn generate_random_date() -> String {
+    let mut rng = rand::thread_rng();
+
+    let year = rng.gen_range(2020..=2025);
+    let month = rng.gen_range(1..=12);
+
+    // Déterminer le nombre de jours dans le mois
+    let days_in_month = match month {
+        2 => 28,
+        4 | 6 | 9 | 11 => 30,
+        _ => 31,
     };
 
-    println!("{}", record.to_csv_line());
+    let day = rng.gen_range(1..=days_in_month);
+
+    // Retourne au format YYYY-MM-DD avec des zéros
+    format!("{:04}-{:02}-{:02}", year, month, day)
+}
+
+fn main() {
+    // Test temporaire : afficher 5 dates aléatoires
+    for _ in 0..5 {
+        println!("{}", generate_random_date());
+    }
 }
