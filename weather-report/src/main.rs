@@ -22,8 +22,35 @@ impl StationType {
     }
 }
 
+// Définition de la structure WeatherRecord
+struct WeatherRecord {
+    date: String,
+    station: StationType,
+    temperature: f32,
+    pressure: f32,
+}
+
+impl WeatherRecord {
+    // Convertit la structure en une ligne CSV
+    fn to_csv_line(&self) -> String {
+        format!(
+            "{},{},{:.1},{:.1}",
+            self.date,
+            self.station.to_string(),
+            self.temperature,
+            self.pressure
+        )
+    }
+}
+
 fn main() {
-    // Test temporaire
-    let s = StationType::StationC;
-    println!("{}", s.to_string());
+    // Test temporaire pour valider la struct et la méthode
+    let record = WeatherRecord {
+        date: "2025-03-15".to_string(),
+        station: StationType::StationA,
+        temperature: 18.5,
+        pressure: 1013.2,
+    };
+
+    println!("{}", record.to_csv_line());
 }
