@@ -1,6 +1,7 @@
 
 use rand::Rng;
 
+// Enum des stations avec implémentation pour affichage en string.
 enum StationType {
     MontrealWeather,
     QuebecCold,
@@ -21,6 +22,7 @@ impl StationType {
     }
 }
 
+// Struct pour toutes les statisques ainsi qu'affichage en format csv.
 struct WeatherRecord {
     date: String,
     station: StationType,
@@ -39,6 +41,7 @@ impl WeatherRecord {
 }
 
 
+/// Génère une date complète au hasard dans le range prédéterminé et la retourne dans le bon format.
 fn generate_random_date() -> String {
     let mut rng = rand::rng();
     let month = rng.random_range(1..=12);
@@ -55,6 +58,7 @@ fn generate_random_date() -> String {
 }
 
 
+/// Génère au hasard des statistiques météo sous forme de WeatherRecord pour affichage csv.
 fn generate_weather_record() -> WeatherRecord {
     let mut rng = rand::rng();
     let date = generate_random_date();
@@ -72,7 +76,7 @@ fn generate_weather_record() -> WeatherRecord {
     WeatherRecord { date: date, station: station, temperature: temp, pressure: pressure }
 }
 
-
+/// Main - Détermine au hasard combien d'entrées à créer puis print le tout.
 fn main() {
     let nb_lines = rand::rng().random_range(10..=20);
     println!("Date,Station,Temperature,Pressure");

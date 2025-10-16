@@ -6,6 +6,8 @@ import threading
 import concurrent.futures as cf
 
 def timing(fonction):
+    """Fonction décorateur pour calculer le temps d'éxécution 
+    et le retourner avec le résultat de la fonction"""
     def wrapper(*args, **kwargs):
         lock = threading.Lock()
         start = time.perf_counter()
@@ -16,7 +18,10 @@ def timing(fonction):
     return wrapper
 
 
+
 def read_weather_data(filename):
+    """Générateur pour la lecture du fichier csv
+    yield un dictionnaire pour les données de chaque ligne"""
     try: 
         with open(filename, 'r', newline='', encoding='utf-8') as file:
             reader = csv.DictReader(file)
@@ -33,6 +38,8 @@ def read_weather_data(filename):
 
 @timing
 def read_analyze(file):
+    """Avec les données collectées du fichier csv, calcule les stats nécessaire 
+    et retourne un dict de celles-ci pour le fichier."""
     data = read_weather_data(file)
     stations = []
     temp = []
@@ -55,6 +62,8 @@ def read_analyze(file):
 
 
 def process_files_concurrently(filenames):
+    """Lecture en parallèle des fichiers csv avec le ThreadPool
+    pour obtenir les stats et le temps d'éxécution pour chaque fichier"""
     executor = cf.ThreadPoolExecutor(max_workers=10)
     results = {}
     with cf.ThreadPoolExecutor(max_workers=10) as executor:
@@ -67,6 +76,7 @@ def process_files_concurrently(filenames):
 
 
 def write_report(filenames):
+    """Lance l'éxécution avec les threads et prints les stats de chaque fichier"""
     data = process_files_concurrently(filenames)
     print(" === Weather Analysis Report === \n")
     print("--- Statistics by File ---")
@@ -83,6 +93,7 @@ def write_report(filenames):
 
 
 def main() -> None:
+    """Main - Création de la liste de fichiers à lire et analyser avec tous les .csv dans ../data/"""
     print("Hello from weather-analyzer!")
     folder = "../data/"
     files = [os.path.join(folder, file) for file in os.listdir(folder) if file.endswith(".csv")]
