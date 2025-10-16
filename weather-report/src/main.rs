@@ -1,6 +1,29 @@
+use rand::Rng;
+
+// Définition de l'enum StationType
+enum StationType {
+    StationA,
+    StationB,
+    StationC,
+    StationD,
+    StationE,
+}
+
+impl StationType {
+    // Convertit une station en String
+    fn to_string(&self) -> String {
+        match self {
+            StationType::StationA => "StationA".to_string(),
+            StationType::StationB => "StationB".to_string(),
+            StationType::StationC => "StationC".to_string(),
+            StationType::StationD => "StationD".to_string(),
+            StationType::StationE => "StationE".to_string(),
+        }
+    }
+}
+
 fn main() {
-    println!("Date,Station,Temperature,Pressure");
-    println!("2025-10-16,StationA,20,1015");
-    println!("2025-10-16,StationB,22,1013");
-    println!("2025-10-16,StationC,19,1018");
+    // Test temporaire
+    let s = StationType::StationC;
+    println!("{}", s.to_string());
 }
