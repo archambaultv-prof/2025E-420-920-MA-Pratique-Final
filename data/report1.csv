@@ -1,0 +1,6 @@
+Date,Station,Temperature,Pressure,Humidity,WindSpeed,WindDirection,Precipitation,CloudCover,Visibility,UVIndex
+2025-10-16,Station_A,0,1021,93,13,120,5,42,2,3
+2025-10-16,Station_B,10,983,31,51,356,26,73,3,10
+2025-10-16,Station_C,19,1013,30,56,195,22,97,16,5
+2025-10-16,Station_D,9,1004,50,70,309,19,81,2,4
+2025-10-16,Station_E,24,1017,40,5,57,48,72,7,4
