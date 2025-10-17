@@ -11,7 +11,7 @@ enum StationType {
 
 impl StationType {
     fn random_station(rng: &mut SimpleRng) -> StationType {
-        match rng.gen_range(0, 5) {  // Correction : utiliser (0, 5) au lieu de (0..5)
+        match rng.gen_range(0, 5) {  
             0 => StationType::StationA,
             1 => StationType::StationB,
             2 => StationType::StationC,
@@ -135,7 +135,7 @@ fn main() {
     println!("Date,Station,Temperature,Pressure");
     
     // Générer entre 10 et 20 enregistrements aléatoires
-    let num_records = rng.gen_range(10, 21); // Correction : utiliser (10, 21)
+    let num_records = rng.gen_range(10, 21);
     
     for _ in 0..num_records {
         let record = generate_weather_record(&mut rng);
