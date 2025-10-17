@@ -3,11 +3,8 @@ use rand::Rng;
 fn main() {
     println!("Date,Station,Temperature,Pressure");
 
-    let mut records = Vec::<WeatherRecord>::new();
-
-    for i in 0..19 {
-        records.push(generate_weather_record());
-        println!("{}",records[i].to_csv_line());
+    for _i in 0..19 {
+        println!("{}",generate_weather_record().to_csv_line()); 
     }
 
 }
@@ -64,7 +61,7 @@ pub struct WeatherRecord {
 */
 impl WeatherRecord {
     pub fn to_csv_line(&self) -> String {
-        format!("{},{},{},{}", 
+        format!("{},{},{:.2},{:.2}", 
             self.date, 
             station_type_to_string(&self.station),
             self.temperature,
@@ -74,7 +71,6 @@ impl WeatherRecord {
 }
 
 
-
 fn gen_rand_date() -> String {
     let mois_30 = vec!["04","06","09","11"];
     let mois_31=vec!["01","03","05","07","08","10","12"];
@@ -82,20 +78,20 @@ fn gen_rand_date() -> String {
 
     let mut rng = rand::thread_rng();
 
-    let month = mois[rng.gen_range(0..11)];
+    let month = mois[rng.random_range(0..11)];
 
-    let day = 0;
+    let mut day = 0;
 
     if mois_30.contains(&month) {
-        let day = rng.gen_range(1..30);
+        day = rng.random_range(1..30);
 
     } else if mois_31.contains(&month) {
-        let day =rng.gen_range(1..31);
+        day =rng.random_range(1..31);
     } else {
-        let day = rng.gen_range(1..28);
+        day = rng.random_range(1..28);
     }
 
-    let year = rng.gen_range(2020..2025);
+    let year = rng.random_range(2020..=2025);
 
     if day < 10 {
         format!("{}-{}-0{}", year, month, day)
@@ -107,26 +103,21 @@ fn gen_rand_date() -> String {
 
 fn generate_weather_record() -> WeatherRecord {
     let date = gen_rand_date();
-    let mut station= StationType::StationA;
 
-    let mut rng = rand::thread_rng();
+    let mut rng = rand::rng();
 
-    let rand_station = rng.gen_range(0..4);
+    let rand_station = rng.random_range(0..=4);
 
-    if rand_station ==0 {
-        station = StationType::StationA;
-    } else if rand_station ==1 {
-        station = StationType::StationB;
-    } else if rand_station ==2 {
-        station= StationType::StationC;
-    } else if rand_station == 3{
-        station = StationType::StationD;
-    } else {
-        station=StationType::StationE;
-    }
+    let station = match rand_station {
+        0 => StationType::StationA,
+        1 => StationType::StationB,
+        2 => StationType::StationC,
+        3 => StationType::StationD,
+        _ => StationType::StationE,
+    };
 
-    let temp:f32 = rng.gen_range(-10.0..40.0);
-    let pressure:f32 = rng.gen_range(980.0..1050.0);
+    let temp:f32 = rng.random_range(-10.0..40.0);
+    let pressure:f32 = rng.random_range(980.0..1050.0);
 
     WeatherRecord { date: date, station: station, temperature: temp, pressure: pressure }
 
