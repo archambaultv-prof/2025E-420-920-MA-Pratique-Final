@@ -1,0 +1,13 @@
+# Rust build output
+wheather-report/target/
+
+# Python virtual env
+weather_analyzer/.venv/
+
+# Python cache files
+**/__pycache__/
+*.pyc
+
+# OS metadata
+.DS_Store
+Thumbs.db
