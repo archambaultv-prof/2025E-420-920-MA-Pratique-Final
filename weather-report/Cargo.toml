@@ -1,6 +1,12 @@
 [package]
 name = "weather-report"
 version = "0.1.0"
-edition = "2024"
+edition = "2021"
 
 [dependencies]
+rand = "0.8"
+pyo3 = { version = "0.22", features = ["extension-module"] }
+
+[lib]
+name = "weather_report"
+crate-type = ["cdylib"]

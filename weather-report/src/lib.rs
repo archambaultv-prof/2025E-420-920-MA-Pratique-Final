@@ -1,3 +1,4 @@
+use pyo3::prelude::*;
 use rand::Rng;
 
 #[derive(Debug, Clone, Copy)]
@@ -8,7 +9,7 @@ enum StationType {
     StationD,
     StationE,
 }
-// Implémentation d'une méthode pour convertir StationType en chaîne de caractères
+
 impl StationType {
     fn to_string(&self) -> String {
         match self {
@@ -21,15 +22,14 @@ impl StationType {
     }
 }
 
-
-// Structure représentant un relevé météorologique
+#[derive(Debug, Clone)]
 struct WeatherRecord {
-    date: String, // Format: "YYYY-MM-DD"
+    date: String,
     station: StationType,
-    temperature: f32, // en Celsius
-    pressure: f32,    // en hPa
+    temperature: f32,
+    pressure: f32,
 }
-// Implémentation d'une méthode pour convertir WeatherRecord en ligne CSV
+
 impl WeatherRecord {
     fn to_csv_line(&self) -> String {
         format!(
@@ -42,9 +42,6 @@ impl WeatherRecord {
     }
 }
 
-
-
-// Fonction pour générer une date aléatoire entre 2020 et 2025
 fn generate_random_date() -> String {
     let mut rng = rand::thread_rng();
     let year = rng.gen_range(2020..=2025);
@@ -58,8 +55,6 @@ fn generate_random_date() -> String {
     format!("{:04}-{:02}-{:02}", year, month, day)
 }
 
-
-// Fonction pour générer un relevé météorologique aléatoire
 fn generate_weather_record() -> WeatherRecord {
     let mut rng = rand::thread_rng();
     let stations = [
@@ -80,17 +75,30 @@ fn generate_weather_record() -> WeatherRecord {
     }
 }
 
-fn main() {
-    // 1. Générateur aléatoire
+/// Génère des données météorologiques aléatoires et retourne une liste de lignes CSV
+#[pyfunction]
+#[pyo3(signature = (num_records=None))]
+fn generate_weather_data(num_records: Option<usize>) -> PyResult<Vec<String>> {
     let mut rng = rand::thread_rng();
     
-    // 2. En-tête CSV
-    println!("Date,Station,Temperature,Pressure");
+    let count = match num_records {
+        Some(n) => n,
+        None => rng.gen_range(10..=20),
+    };
     
-    // Génère entre 10 et 20 enregistrements et les afficher
-    let num_records = rng.gen_range(10..=20);
-    for _ in 0..num_records {
+    let mut result = vec!["Date,Station,Temperature,Pressure".to_string()];
+    
+    for _ in 0..count {
         let record = generate_weather_record();
-        println!("{}", record.to_csv_line());
+        result.push(record.to_csv_line());
     }
+    
+    Ok(result)
+}
+
+/// Module Python exposant les fonctionnalités Rust
+#[pymodule]
+fn weather_report(_py: Python, m: &Bound<PyModule>) -> PyResult<()> {
+    m.add_function(wrap_pyfunction!(generate_weather_data, m)?)?;
+    Ok(())
 }
