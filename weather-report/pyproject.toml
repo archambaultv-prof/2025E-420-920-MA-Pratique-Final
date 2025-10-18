@@ -1,0 +1,9 @@
+[build-system]
+requires = ["maturin>=1.0"]
+build-backend = "maturin"
+
+[project]
+name = "weather-report"
+version = "0.1.0"
+description = "Weather data generator module for Python"
+requires-python = ">=3.11"
